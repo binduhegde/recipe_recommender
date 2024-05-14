@@ -4,11 +4,11 @@ import pandas as pd
 # Import the recommend function from your recommender.py file
 from recommender import recommend
 
-# * BG IMAGE
+# # * BG IMAGE
 # page_bg_img = '''
 # <style>
 # body {
-# background-image: url("https://images.pexels.com/photos/349610/pexels-photo-349610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+# background-image: url("https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
 # background-size: cover;
 # }
 # </style>
@@ -17,10 +17,10 @@ from recommender import recommend
 
 
 def main():
-    title = '<h1 style="background: linear-gradient(to right,#C40C0C,#FFC100); color: transparent; color: white; font-size: 150%; text-align: left; padding: 15px; letter-spacing:1px; width: 100%;">Recipe Recommender</h1>'
+    title = '<div style="background: linear-gradient(to right,#FC5C7D,#6A82FB); color: white; font-family: Helvetica; font-weight: bold; font-size: 40px; text-align: center; padding: 30px; letter-spacing:1px; width: 100%; margin-bottom: 20px;"><h2>Vegan Recipe Recommender</h2></div>'
     st.markdown(title, unsafe_allow_html=True)
-    # st.title('Recipe Recommender')
-    st.markdown('Please choose your preferences in the sidebar')
+    subhead = '<p style="color: #FC5C7D;">Please choose your preferences and allergies in the sidebar</p>'
+    st.markdown(subhead, unsafe_allow_html=True)
 
     # Sidebar for user input
     st.sidebar.header('User Preferences')
@@ -33,9 +33,9 @@ def main():
         'Select your favorite categories:', pref_options)
     allergy_options = ['Soy', 'Glutten']
     user_allergies = st.sidebar.multiselect(
-        'Select your allergies:', allergy_options)
+        'Select your allergies if any:', allergy_options)
 
-    time = st.sidebar.slider('mins', 5, 130, 30, 10)
+    time = st.sidebar.slider('Preferred cook time in mins', 5, 130, 30, 10)
 
     # Empty element to keep sidebar open
     st.sidebar.markdown('---')  # Add a horizontal line
@@ -47,8 +47,7 @@ def main():
             user_pref, user_allergies, time, top_n=20)
 
        # Display recommendations
-        # st.subheader('Top Recommendations:')
-        top_rec = '<p style="background: linear-gradient(to right,#FF6500, white); color: transparent; color: white; font-size: 100%; text-align: left; padding: 8px; letter-spacing:1px; width: 100%; margin-bottom: 20px;">Top Recommendations</p>'
+        top_rec = '<p style="background: linear-gradient(to right,#FC5C7D, transparent); color: transparent; color: white; font-size: 100%; text-align: left; padding: 8px; letter-spacing:1px; width: 100%; margin-bottom: 20px;">Top Recommendations</p>'
         st.markdown(top_rec, unsafe_allow_html=True)
         for index, row in recommendations.iterrows():
             # Display recipe name with clickable link
