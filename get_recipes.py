@@ -7,18 +7,27 @@ import pandas as pd
 
 recipes = {}
 
+# this recepe_links has links of over 1,000 links
 with open('recipe_links.txt', 'r') as file:
     links = file.readlines()
 
+# removing '\n' from every link to make it valid
 for i in range(len(links)):
     links[i] = links[i][:-1]
 
+# for printing i for every iteration for convinience
 i = 0
 for link in links[900:]:
 
     chrome_driver.get(url=link)
+    # setting 15 sec wait for the website to load properly
     wait = WebDriverWait(chrome_driver, 15)
 
+    # *--------------------------------------------
+    # *--------GETTING RECIPE INFORMATION----------
+    # *--------------------------------------------
+
+    # *-----------------NAME-----------------------
     try:
         name = wait.until(
             EC.visibility_of_element_located((By.CLASS_NAME, 'recipe-name'))
@@ -26,6 +35,7 @@ for link in links[900:]:
     except:
         name = None
 
+    # *---------------LIKES---------------------
     try:
         # Similarly, wait for other elements to be present
         likes = wait.until(
@@ -35,6 +45,7 @@ for link in links[900:]:
     except:
         likes = None
 
+    # *---------------TIME---------------------
     try:
         time = wait.until(
             EC.visibility_of_element_located(
@@ -43,6 +54,7 @@ for link in links[900:]:
     except:
         time = None
 
+    # *-----------NO OF SERVINGS----------------
     try:
         servings = wait.until(
             EC.visibility_of_element_located(
@@ -51,6 +63,7 @@ for link in links[900:]:
     except:
         servings = None
 
+    # *---------------INGREDIENTS---------------------
     try:
         ingredients = wait.until(
             EC.visibility_of_all_elements_located(
@@ -61,6 +74,7 @@ for link in links[900:]:
     except:
         ingredients = None
 
+    # *--------------NUTRITION INFO-------------------
     try:
         nutri_button = wait.until(
             EC.visibility_of_element_located(
@@ -79,6 +93,7 @@ for link in links[900:]:
     except:
         nutritions = None
 
+    # adding all the information to recipes dictionary
     recipes[name] = {
         'likes': likes,
         'time': time,
@@ -118,5 +133,7 @@ for link in links[900:]:
     # print(nutritions)
     # print('-'*20)
 
+# converting recipes into a pandas df
 df = pd.DataFrame(recipes).T
+# saving the df
 df.to_csv('recipes10.csv')

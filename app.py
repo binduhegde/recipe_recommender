@@ -17,8 +17,10 @@ from recommender import recommend
 
 
 def main():
-    title = '<div style="background: linear-gradient(to right,#FC5C7D,#6A82FB); color: white; font-family: Helvetica; font-weight: bold; font-size: 40px; text-align: center; padding: 30px; letter-spacing:1px; width: 100%; margin-bottom: 20px;"><h2>Vegan Recipe Recommender</h2></div>'
+    # title html
+    title = '<div style="background: linear-gradient(to right,#FC5C7D,#6A82FB); color: transparent; color: white; font-family: Helvetica; font-weight: bold; font-size: 40px; text-align: center; padding: 30px; letter-spacing:1px; width: 100%; margin-bottom: 20px;"><h2>Vegan Recipe Recommender</h2></div>'
     st.markdown(title, unsafe_allow_html=True)
+    # subheading html
     subhead = '<p style="color: #FC5C7D;">Please choose your preferences and allergies in the sidebar</p>'
     st.markdown(subhead, unsafe_allow_html=True)
 
@@ -34,7 +36,7 @@ def main():
     allergy_options = ['Soy', 'Glutten']
     user_allergies = st.sidebar.multiselect(
         'Select your allergies if any:', allergy_options)
-
+    # slider to set preferred time
     time = st.sidebar.slider('Preferred cook time in mins', 5, 130, 30, 10)
 
     # Empty element to keep sidebar open
@@ -59,7 +61,8 @@ def main():
             # Align likes to the right side of the page
             st.write(f"{recipe_link} - {likes_percentage}", anchor='right')
 
-
+# since the df has column names with lowercase letters and userscores, 
+# we convert them to the desired names
 def get_recommendations(user_pref, user_allergies, time, top_n):
     for i, pref in enumerate(user_pref):
         if pref == 'Vegan Milk':
@@ -72,7 +75,7 @@ def get_recommendations(user_pref, user_allergies, time, top_n):
             user_pref[i] = 'grains_and_cereals'
         else:
             user_pref[i] = user_pref[i].lower()
-
+    # all allergies start with 'contains_' followed by the lowercase name
     for i, allergy in enumerate(user_allergies):
         user_allergies[i] = f'contains_{user_allergies[i].lower()}'
 
